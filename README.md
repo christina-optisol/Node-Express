@@ -98,25 +98,6 @@ gulp
 4. pm2 start dist/index.js
 ```
 
-## Docker
 
-```sh
-# For Development
-# service restarts on file change
-1. bash bin/development.sh
-```
 
-## Deployment
-* Create docker image
-```sh
-  $ docker build --rm -f Dockerfile -t optisolbusiness/skillcord-service:latest .
-```
 
-* Push to docker hub
-```sh
-  $ docker push optisolbusiness/skillcord-service:latest
-```
-* Connect to staging server
-```sh
-  ssh -i optisolawsubuntu.pem ubuntu@34.232.103.127
-  ```
