@@ -1,0 +1,475 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SkillCord",
+		"_postman_id": "e9bcc79f-9c2f-ea10-ab67-0f8f7f088028",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "sprint-1",
+			"description": "",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"url": "http://localhost:4040/api/users",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Rajendran",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "S",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "organisation",
+									"value": "Optisol",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "9092830221",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "reachout2raj@gmail.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "raja.nice32",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "baseURL",
+									"value": "http://google.co.in",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Raj@12345",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "Raj@12345",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"url": "http://localhost:4040/api/auth/verify-otp",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "otp",
+									"value": "524033",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var responseJSON;",
+									"responseJSON = JSON.parse(responseBody);",
+									"",
+									"postman.setGlobalVariable(\"skillToken\", responseJSON.token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:4040/api/auth/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "raja.nice23",
+									"description": "it can be username or email",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Raj@12345",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"url": "http://localhost:4040/api/auth/forgot-password",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "rajendran.s@optisolbusiness.com",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"url": "http://localhost:4040/api/auth/reset-password",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "otp",
+									"value": "524033",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "Raj@12345",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "Raj@1234",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sprint-2",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Department",
+					"request": {
+						"url": "http://localhost:4040/api/departments",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Javascript",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "it's a javascript department",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "cpdPoints",
+									"value": "70",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "user",
+									"value": "59a69cfe72aa6d0e0a5ac677",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "View Department",
+					"request": {
+						"url": "http://localhost:4040/api/departments/59a91228df2c463b95c94178",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List Departments",
+					"request": {
+						"url": "http://localhost:4040/api/departments",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Department",
+					"request": {
+						"url": "http://localhost:4040/api/departments/59a91228df2c463b95c94178",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Javascript edited",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "it's a javascript department edited",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "cpdPoints",
+									"value": "75",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "user",
+									"value": "59a69cfe72aa6d0e0a5ac677",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add existing user to department",
+					"request": {
+						"url": "http://localhost:4040/api/departments/59a91228df2c463b95c94178/add-user",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "59a69d2272aa6d0e0a5ac67a",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add new user to department",
+					"request": {
+						"url": "http://localhost:4040/api/departments/59a91228df2c463b95c94178/add-user",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "rajendran.s@optisolbusiness.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "8957896587",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user from department",
+					"request": {
+						"url": "http://localhost:4040/api/departments/59a91228df2c463b95c94178/remove-user",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{skillToken}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "userId",
+									"value": "59c119c78d0af465f2e770bb",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
