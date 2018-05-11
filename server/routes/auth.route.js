@@ -26,9 +26,12 @@ router.route('/reset-password')
 router.route('/verify-otp')
   .post(authCtrl.verifyOTP);
 
+router.post('/send_otp', authCtrl.sendOTPFirebase);
+router.get('/verify_otp/:otp', authCtrl.verifyOTPFirebase);
+
 /** POST /api/auth/sociallogin - Returns token */
-router.route('/sociallogin')
-  .post(validate(paramValidation.socialLogin), authCtrl.socialLogin);
+// router.route('/sociallogin')
+//   .post(validate(paramValidation.socialLogin), authCtrl.socialLogin);
 
 /** GET /api/auth/random-number - Protected route,
  * needs token returned by the above as header. Authorization: Bearer {token} */

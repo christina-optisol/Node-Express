@@ -6,6 +6,7 @@ const config  = require ('../../config/config');
 const User  = require ('../models/user.model');
 const EmailService  = require ('../services/email.service');
 const Twilio  = require ('../services/twilio.service');
+const firebase =  require('firebase');     
 
 function generateToken(user) {
   const token = jwt.sign({
@@ -100,6 +101,7 @@ function recieveOtp(req, res, next) {
         .then((savedUser) => { // eslint-disable-line consistent-return
             Twilio.smsOTP({ otp: savedUser.otp, phoneNumber: savedUser.phoneNumber });
             return res.json({ message: 'OTP SMS sent!' });
+
           }) .catch(() => {
             next(new APIError('Internal Server Error', httpStatus.INTERNAL_SERVER_ERROR, true));
           });
@@ -174,50 +176,76 @@ function resetPassword(req, res, next) {
   }).catch(err => next(new APIError(err, httpStatus.INTERNAL_SERVER_ERROR, true)));
 }
 
-function socialLogin(req, res, next) {
-  const socialInfo = req.body;
-  User.findOne({ email: socialInfo.email }).then((user) => {
-    if (user) {
-      if ((socialInfo.linkedinId && socialInfo.linkedinId === user.linkedinId)
-      || (socialInfo.facebookId && socialInfo.facebookId === user.facebookId)
-      || (socialInfo.googleId && socialInfo.googleId === user.googleId)) {
-        res.status(200).json({
-          token: generateToken(user),
-          user: {
-            id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email
-          },
-          role: user.role
-        });
-      } else {
-        res.status(422).json({
-          message: 'email already exists'
-        });
-      }
-    } else {
-      const userInfo = new User(socialInfo);
-      userInfo.save()
-        .then((savedUser) => {
-          EmailService.welcomeEmail({ firstName: savedUser.firstName, toEmail: savedUser.email });
-          Role.findOne({ name: 'Global Admin' })
-          .then((role) => {
-            res.status(200).json({
-              token: generateToken(savedUser),
-              user: {
-                id: savedUser._id,
-                firstName: savedUser.firstName,
-                lastName: savedUser.lastName,
-                email: savedUser.email
-              },
-              role
-            });
-          });
-        })
-        .catch(e => res.status(400).json(e));
-    }
-  }).catch(err => next(new APIError(err, httpStatus.INTERNAL_SERVER_ERROR, true)));
+// function socialLogin(req, res, next) {
+//   const socialInfo = req.body;
+//   User.findOne({ email: socialInfo.email }).then((user) => {
+//     if (user) {
+//       if ((socialInfo.linkedinId && socialInfo.linkedinId === user.linkedinId)
+//       || (socialInfo.facebookId && socialInfo.facebookId === user.facebookId)
+//       || (socialInfo.googleId && socialInfo.googleId === user.googleId)) {
+//         res.status(200).json({
+//           token: generateToken(user),
+//           user: {
+//             id: user._id,
+//             firstName: user.firstName,
+//             lastName: user.lastName,
+//             email: user.email
+//           },
+//           role: user.role
+//         });
+//       } else {
+//         res.status(422).json({
+//           message: 'email already exists'
+//         });
+//       }
+//     } else {
+//       const userInfo = new User(socialInfo);
+//       userInfo.save()
+//         .then((savedUser) => {
+//           EmailService.welcomeEmail({ firstName: savedUser.firstName, toEmail: savedUser.email });
+//           Role.findOne({ name: 'Global Admin' })
+//           .then((role) => {
+//             res.status(200).json({
+//               token: generateToken(savedUser),
+//               user: {
+//                 id: savedUser._id,
+//                 firstName: savedUser.firstName,
+//                 lastName: savedUser.lastName,
+//                 email: savedUser.email
+//               },
+//               role
+//             });
+//           });
+//         })
+//         .catch(e => res.status(400).json(e));
+//     }
+//   }).catch(err => next(new APIError(err, httpStatus.INTERNAL_SERVER_ERROR, true)));
+// }
+
+
+function sendOTPFirebase (req, res){
+    authy.phones().verification_start(req.body.phoneNumber, req.body.countryCode,{
+      via: 'sms',
+      locale: 'en'
+    }, (err, res) => {
+      if (err){
+        return res.json({ error: err })
+      }       
+      else{
+        res.json({
+        message: 'Success',
+        value: res})
+        }
+      })
+    }     
+function  verifyOTPFirebase (req, res){
+    authy.phones().verification_check(req.query.phoneNumber, req.query.countryCode, req.params.otp, (err, res) =>{
+      if (err)
+        return req.json({ error: err }) 
+      if (res.success){  
+        console.log("Phone number verified and register user!!!")
+
+      }      })
 }
 
-module.exports = { login, forgotPassword, resetPassword, verifyOTP, socialLogin, loginOtp, recieveOtp };
+module.exports = { login, forgotPassword, resetPassword, verifyOTP, loginOtp, recieveOtp, sendOTPFirebase, verifyOTPFirebase };
