@@ -212,4 +212,4 @@ function  verifyOTPFirebase (req, res){
       }      })
 }
 
-module.exports = { login, forgotPassword, resetPassword, verifyOTP, loginOtp, recieveOtp, sendOTPFirebase, verifyOTPFirebase };
+module.exports = { login, forgotPassword, resetPassword, loginOtp, recieveOtp, sendOTPFirebase, verifyOTPFirebase };

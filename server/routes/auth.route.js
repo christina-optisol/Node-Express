@@ -23,8 +23,8 @@ router.route('/forgot-password')
 router.route('/reset-password')
   .post(validate(paramValidation.resetPassword), authCtrl.resetPassword);
 
-router.route('/verify-otp')
-  .post(authCtrl.verifyOTP);
+// router.route('/verify-otp')
+//   .post(authCtrl.verifyOTP);
 
 router.post('/send_otp', authCtrl.sendOTPFirebase);
 router.get('/verify_otp/:otp', authCtrl.verifyOTPFirebase);
