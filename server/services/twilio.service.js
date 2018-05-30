@@ -9,8 +9,8 @@ module.exports.smsOTP = (options) => {
   console.log(options.phoneNumber)
   client.messages.create({
     body: `Node-Express: Your OTP  ${options.otp}`,
-    to:'+918508357929',  // Text this number
-    from: '+18652343311' // From a valid Twilio number
+    to:'+91'+options.phoneNumber,  // Text this number
+    from: '+16603120680' // From a valid Twilio number
   })
    .then(() => {
       //console.log(messages.sid);

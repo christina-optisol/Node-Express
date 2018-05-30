@@ -43,8 +43,8 @@ const config = {
   baseUrl: 'http://34.232.103.127:3000/thirdpartyview',
   GLOBAL_ADMIN: 'Global Admin',
   twilio:{
-  accountSid: 'AC50f65b1ef22dd55a026ac0ee57653e6c',
-  authToken: '0a74948355a4022b9d0a287953111005',
+  accountSid: 'ACbe7bff808433b104901c93f0f0de82e0',
+  authToken: '90c0cb7795d81c85a12d0c4d76aa7c3c',
   authy: {
     api_key: 'SK6b9a7d668ccd229d6785e9bc014ce926'
   }
