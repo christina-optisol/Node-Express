@@ -3,6 +3,8 @@ const User = require ('../models/user.model');
 const EmailService = require ('../services/email.service');
 
 
+// Basic CRUD for user create,update,delete,get
+
 function load(req, res, next, id) {
   User.get(id)
     .then((user) => {

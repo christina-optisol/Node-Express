@@ -17,6 +17,8 @@ function generateToken(user) {
   return token;
 }
 
+// Login with OTP send to EMAIL given
+
 function login(req, res, next) {
   const { username, password } = req.body;
   const criteria = (username.indexOf('@') === -1) ? { username } : { email: username };
@@ -58,6 +60,8 @@ function login(req, res, next) {
   });
 }
 
+// Login with OTP send to PHONENUMBER given
+
 function loginOtp(req, res, next) {
   const { otp } = req.body;
   User.findOne({ otp }).then((user) => {
@@ -90,6 +94,8 @@ function loginOtp(req, res, next) {
 }
 
 
+// Receive OTP to given phonenumber through TWILIO INTEGRATION
+
 function recieveOtp(req, res, next) {
   const { phoneNumber } = req.body;
   User.findOne({ phoneNumber: phoneNumber }).then((user) => { // eslint-disable-line consistent-return
@@ -112,6 +118,8 @@ function recieveOtp(req, res, next) {
       next(new APIError('Internal Server Error', httpStatus.INTERNAL_SERVER_ERROR, true));
     });
 }
+
+// Give email to recieve OTP to RESET password
 
 function forgotPassword(req, res, next) {
   const { email } = req.body;
@@ -153,15 +161,17 @@ function forgotPassword(req, res, next) {
   });
 }
 
-function verifyOTP(req, res) {
-  const { otp } = req.body;
-  User.findOne({ otp }).then((user) => {
-    if (user) {
-      return res.json({ valid: true });
-    }
-    return res.status(400).json({ valid: false });
-  });
-}
+// function verifyOTP(req, res) {
+//   const { otp } = req.body;
+//   User.findOne({ otp }).then((user) => {
+//     if (user) {
+//       return res.json({ valid: true });
+//     }
+//     return res.status(400).json({ valid: false });
+//   });
+// }
+
+// Give received OTP from mail to RESET password
 
 function resetPassword(req, res, next) {
   const { otp, newPassword } = req.body;
@@ -175,52 +185,6 @@ function resetPassword(req, res, next) {
     }
   }).catch(err => next(new APIError(err, httpStatus.INTERNAL_SERVER_ERROR, true)));
 }
-
-// function socialLogin(req, res, next) {
-//   const socialInfo = req.body;
-//   User.findOne({ email: socialInfo.email }).then((user) => {
-//     if (user) {
-//       if ((socialInfo.linkedinId && socialInfo.linkedinId === user.linkedinId)
-//       || (socialInfo.facebookId && socialInfo.facebookId === user.facebookId)
-//       || (socialInfo.googleId && socialInfo.googleId === user.googleId)) {
-//         res.status(200).json({
-//           token: generateToken(user),
-//           user: {
-//             id: user._id,
-//             firstName: user.firstName,
-//             lastName: user.lastName,
-//             email: user.email
-//           },
-//           role: user.role
-//         });
-//       } else {
-//         res.status(422).json({
-//           message: 'email already exists'
-//         });
-//       }
-//     } else {
-//       const userInfo = new User(socialInfo);
-//       userInfo.save()
-//         .then((savedUser) => {
-//           EmailService.welcomeEmail({ firstName: savedUser.firstName, toEmail: savedUser.email });
-//           Role.findOne({ name: 'Global Admin' })
-//           .then((role) => {
-//             res.status(200).json({
-//               token: generateToken(savedUser),
-//               user: {
-//                 id: savedUser._id,
-//                 firstName: savedUser.firstName,
-//                 lastName: savedUser.lastName,
-//                 email: savedUser.email
-//               },
-//               role
-//             });
-//           });
-//         })
-//         .catch(e => res.status(400).json(e));
-//     }
-//   }).catch(err => next(new APIError(err, httpStatus.INTERNAL_SERVER_ERROR, true)));
-// }
 
 
 function sendOTPFirebase (req, res){
